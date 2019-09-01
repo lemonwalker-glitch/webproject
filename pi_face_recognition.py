@@ -7,13 +7,17 @@ import pickle
 import time
 import cv2
 
-i = 0
+
 print("[INFO] loading encodings + face detector...")
 
 data = pickle.loads(open("encodings.pickle", "rb").read())
 detector = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 
-def recog(frame):
+def add(y):
+    y = y+2
+
+
+def recog(frame, name = None):
         
     
     frame = imutils.resize(frame, width=500)
@@ -65,6 +69,8 @@ def recog(frame):
         names.append(name)
     
     # loop over the recognized faces
+
+
     for ((top, right, bottom, left), name) in zip(boxes, names):
         # draw the predicted face name on the image
         cv2.rectangle(frame, (left, top), (right, bottom),
@@ -72,17 +78,28 @@ def recog(frame):
         y = top - 15 if top - 15 > 15 else top + 15
         cv2.putText(frame, name, (left, y), cv2.FONT_HERSHEY_SIMPLEX,
             0.75, (0, 255, 0), 2)
-        print(name,time)
-        initial = name
-        #if name == initial:
-        #    i += 1
-        #    if i ==10:
-         #       break
-        #else:
-         #   i = 0
+#
+  #      print(name,time)
+  #      #current = name
+  #      print('are we here')
+  #      logs_recorded.append(name)
+  #      if len(logs_recorded) <= 1:
+  #          pass
+  #      elif len(logs_recorded) > 1:
+  #          if name == logs_recorded[-2]:
+  #              i += 1
+  #          else:
+ #               print('failed restarting')
+  #              logs_recorded[-2] = name
+  #              logs_recorded[-1] = []
+ #               i = 0
+ #   if i ==10:
+ #       print('achievement unlocked')
+
+           
 
     # display the image to our screen
-    return cv2.imencode('.jpg', frame)[1].tobytes()
+    return cv2.imencode('.jpg', frame)[1].tobytes(), name
     #cv2.imshow("Frame", frame)
     key = cv2.waitKey(1) & 0xFF
 
