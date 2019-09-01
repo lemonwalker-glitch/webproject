@@ -13,7 +13,42 @@ import imutils
 import pickle
 import time
 
-
+#def gen(camera):
+def gen():
+    print("[INFO] starting video stream...")
+    #vs = VideoStream(src=0).start()
+    vs = cv2.VideoCapture(0)
+    # vs = VideoStream(usePiCamera=True).start()
+    time.sleep(2.0)
+    initial = ""
+    i = 0
+    recognising = True
+    while recognising:
+        grabbed, frame2 = vs.read()
+        frame, name = recogniser.recog(frame2)
+        print(name)
+        if name == initial and name != None:
+              i = i+1
+              print(i)
+              if i == 5:
+                    print('reached 10')
+                    vs.release()
+                    cv2.destroyAllWindows()
+                    print('camera is dead')
+                    sse_event = 'last item'
+                    sse_data = url_for('welcome')
+                    
+                    
+              else:
+                    initial = name
+        else:
+              i = 0
+              initial = name
+        #print(name,time)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n').format( event=sse_event,data=sse_data)
+        print('hello world')
+    print('everything has ended')
 # cascade for face detection
 print("[INFO] loading encodings + face detector...")
 #data = pickle.loads(open(args["encodings"], "rb").read())
@@ -27,63 +62,40 @@ app = Flask(__name__)
 @app.route('/', methods = ['GET','POST'])
 def index():
       if "checkout_button" in request.form: #name="checkout_button" is the value request.form['checkout_button] = checkout  (value)
+        print(request)
         print(request.form["checkout_button"])
-        return redirect(url_for('recog'))
+        #return redirect(url_for('recog'))
+        return render_template('recog.html')
       elif "checkin_button" in request.form:
         print('checkin button')
         return redirect(url_for('recog'))
       else:
           return render_template('index.html')
 
-@app.route('/recog')
+@app.route('/recog', methods = ['GET', 'POST'])
 def recog():
     """Video Streaming Home Page."""
-    return render_template('recog.html')
 
-#def gen(camera):
-def gen():
-    
-    print("[INFO] starting video stream...")
-    #vs = VideoStream(src=0).start()
-    vs = cv2.VideoCapture(0)
-    # vs = VideoStream(usePiCamera=True).start()
-    time.sleep(2.0)
-    
-    while True:
-        
-        grabbed, frame2 = vs.read()
-        frame = recogniser.recog(frame2)
-        
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-'''
-cam.release()
-    Akshay  27
-Akshay  28
-Akshay  29
-Debugging middleware caught exception in streamed response at a point where response headers were already sent.
-Traceback (most recent call last):
-  File "/usr/lib/python3/dist-packages/werkzeug/wsgi.py", line 870, in __next__
-    return self._next()
-  File "/usr/lib/python3/dist-packages/werkzeug/wrappers.py", line 82, in _iter_encoded
-    for item in iterable:
-  File "/home/pi/webapp/app.py", line 72, in gen
-    return render_template('/')
-  File "/usr/lib/python3/dist-packages/flask/templating.py", line 133, in render_template
-    ctx.app.update_template_context(context)
-AttributeError: 'NoneType' object has no attribute 'app'
-'''
-    
+    return render_template('recog.html')
        
 @app.route('/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute fo an img tag."""
+    print('before response function')
     return Response(gen(),#gen(Camera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+    print('after the response function')
 
+def redirect_url():
+      return redirect(url_for('welcome'))
 
 @app.route('/welcome')
 def welcome():
+      return render_template('welcome.html')
+
+
+@app.route('/excel')
+def excel():
     with open('csv_files/mycsv.csv', 'a') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(['Johnson', datetime.date.today().strftime('%d/%m/%Y'), datetime.datetime.now().time().strftime('%H:%M:%S')])
