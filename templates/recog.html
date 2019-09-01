@@ -1,12 +1,30 @@
 <html>
-<head>
-<title>Robot Lab live streaming</title>
-<!--<link rel="stylesheet" href='../static/style.css'/> -->
-</head>
-<body>
-<h1>robot lave live</h1>
-<h3><img src="{{ url_for('video_feed') }}" width="50%"</h3>
-<hr>
-<p> @2018 Developed by akshay</p>
-</body>
+  <head>
+    <title>Robot Lab live streaming</title>
+    <!--<link rel="stylesheet" href='../static/style.css'/> -->
+  </head>
+  <body>
+    <h1>robot lave live</h1>
+    <h3><img src="{{ url_for("video_feed") }}" width="50%"</h3>
+    <div clss="confirmation" name="confirm">
+      <h2>To help us improve, please can you verify is this was you</h2>
+
+
+      <script>
+      source.addEventListener('last-item', function(event) {
+     source.close();
+     redirect(event.data);
+   }, false
+);</script>
+
+<script>
+function redirect(url) {
+  document.location = url;
+}</script>
+      <form method = 'post' enctype=multipart/form-data></form>
+      <input type="submit" name="verify" value="Yes, it was I" />
+      <input type="submit" name="verify" value="No, I lets try again" />
+    </div>
+    <p>@2018 Developed by akshay</p>
+  </body>
 </html>
