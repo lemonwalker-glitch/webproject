@@ -1,4 +1,4 @@
-from flask import Flask, render_template, Response, request, url_for, redirect
+from flask import Flask, render_template, Response, request, url_for, redirect, stream_with_context
 import cv2
 import numpy as np
 import os
@@ -35,10 +35,11 @@ def gen():
                     vs.release()
                     cv2.destroyAllWindows()
                     print('camera is dead')
-                    sse_event = 'last item'
+                    sse_event = 'last-item'
                     sse_data = url_for('welcome')
-                    
-                    
+                    sse_id = 1
+                    yield "id:{_id}\nevent:{event}\ndata:{data}\n\n".format(_id=sse_id, event=sse_event, data=sse_data)
+                    recognising = False
               else:
                     initial = name
         else:
@@ -46,9 +47,11 @@ def gen():
               initial = name
         #print(name,time)
         yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n').format( event=sse_event,data=sse_data)
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+       
         print('hello world')
-    print('everything has ended')
+    print('everything is dead')
+    #yield "id:{_id}\nevent:{event}\ndata:{data}\n\n".format(_id=sse_id, event=sse_event, data=sse_data)
 # cascade for face detection
 print("[INFO] loading encodings + face detector...")
 #data = pickle.loads(open(args["encodings"], "rb").read())
@@ -82,9 +85,8 @@ def recog():
 def video_feed():
     """Video streaming route. Put this in the src attribute fo an img tag."""
     print('before response function')
-    return Response(gen(),#gen(Camera()),
+    return Response(stream_with_context(gen()),#gen(Camera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
-    print('after the response function')
 
 def redirect_url():
       return redirect(url_for('welcome'))
