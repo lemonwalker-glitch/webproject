@@ -1,0 +1,17 @@
+https://www.makeuseof.com/tag/python-javascript-communicate-json/
+
+https://stackoverflow.com/questions/45909165/how-to-send-data-from-server-to-client-in-python-using-flask
+
+https://dzone.com/articles/flask-101-adding-editing-and-displaying-data
+
+https://blog.miguelgrinberg.com/post/the-flask-mega-tutorial-part-xx-some-javascript-magic
+
+https://www.jitsejan.com/python-and-javascript-in-flask.html
+
+https://stackoverflow.com/questions/11178426/how-can-i-pass-data-from-flask-to-javascript-in-a-template
+
+https://stackoverflow.com/questions/37259740/passing-variables-from-flask-to-javascript
+
+https://stackoverflow.com/questions/38315368/how-can-i-render-a-js-template-from-a-rendered-html-template
+
+https://stackoverflow.com/questions/45918818/how-to-send-message-from-server-to-client-using-flask-socket-io
