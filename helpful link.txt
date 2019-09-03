@@ -15,3 +15,5 @@ https://stackoverflow.com/questions/37259740/passing-variables-from-flask-to-jav
 https://stackoverflow.com/questions/38315368/how-can-i-render-a-js-template-from-a-rendered-html-template
 
 https://stackoverflow.com/questions/45918818/how-to-send-message-from-server-to-client-using-flask-socket-io
+
+https://www.makeuseof.com/tag/python-javascript-communicate-json/ -=- this is good for looking at how javascript and python work well together
